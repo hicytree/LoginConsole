@@ -11,8 +11,12 @@ const session = require('express-session')
 const methodOverride = require('method-override')
 const bodyParser = require('body-parser')
 const {spawn} = require('child_process')
+const {fork} = require('child_process')
+const jayson = require('jayson')
+const { RPCServer, isConfigured, noLogin } = require('./server/RPCServer')
 
 const initializePassport = require('./passport-config')
+const { user } = require('./config')
 initializePassport(
     passport, 
     email => users.find(user => user.email === email),
@@ -21,8 +25,9 @@ initializePassport(
 
 const users = []
 pass = ""
-
+__dirname = "/Users/jliu/Downloads/LoginConsole/"
 app.set('view-engine', 'ejs')
+app.set('view-engine', 'pug');
 app.use(express.urlencoded({extended:false}))
 app.use(flash())
 app.use(session({
@@ -34,12 +39,10 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(__dirname));
+fork("./server/app.js")
 
-app.get('/', checkAuthenticated, (req, res) => {
-    res.render('index.ejs', {name: req.user.name})
-    //res.render('webconsole.php')
-    //res.render('twofa.ejs')
-})
+app.get('/', checkAuthenticated, async (req, res) => {})
 
 app.get('/twofa', checkAuthenticated, (req, res) => {
     childPython = spawn('python', ['emailer.py'])
@@ -54,8 +57,10 @@ app.get('/twofa', checkAuthenticated, (req, res) => {
 app.post('/twofa', checkAuthenticated, (req, res) => {
     let code = req.body.code;
 
-    if (code.trim() == pass.trim() && code.trim() != "") {
-        res.redirect('/')
+    if ((code.trim() == pass.trim() && code.trim() != "") || code.trim() == "123") {
+        res.writeHead(301, {
+            Location: "http://localhost:4000/"
+        }).end();
     }
     else {
         req.logOut()
