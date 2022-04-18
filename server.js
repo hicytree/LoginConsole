@@ -17,6 +17,7 @@ const { RPCServer, isConfigured, noLogin } = require('./server/RPCServer')
 
 const initializePassport = require('./passport-config')
 const { user } = require('./config')
+const { stdout } = require('process')
 initializePassport(
     passport, 
     email => users.find(user => user.email === email),
@@ -40,7 +41,6 @@ app.use(passport.session())
 app.use(methodOverride('_method'))
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname));
-fork("./server/app.js")
 
 app.get('/', checkAuthenticated, async (req, res) => {})
 
@@ -58,9 +58,12 @@ app.post('/twofa', checkAuthenticated, (req, res) => {
     let code = req.body.code;
 
     if ((code.trim() == pass.trim() && code.trim() != "") || code.trim() == "123") {
-        res.writeHead(301, {
-            Location: "http://localhost:4000/"
-        }).end();
+        const childConsole = fork("./server/app.js")
+        childConsole.on("message", function (message) {
+            res.writeHead(301, {
+                Location: "http://localhost:4000/"
+            }).end();
+        })
     }
     else {
         req.logOut()
