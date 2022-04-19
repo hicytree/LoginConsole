@@ -41,4 +41,4 @@ router.post('/rpc', c2k(RPCServer.middleware()))
 server.use(router.routes()).use(router.allowedMethods())
 
 server.listen(4000)
-process.send("listening")
+process.send("1")

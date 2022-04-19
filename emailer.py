@@ -1,5 +1,6 @@
 import random
 import smtplib
+import sys
 
 code = random.randint(100000, 999999)
 print(code)
@@ -8,7 +9,7 @@ gmail_user = 'allentyao123@gmail.com'
 gmail_password = 'testingforthewin'
 
 sent_from = gmail_user
-to = ['yjeffliu@gmail.com']
+to = [sys.argv[1]]
 subject = '2FA Code'
 body = str(code)
 
@@ -25,4 +26,3 @@ smtp_server.ehlo()
 smtp_server.login(gmail_user, gmail_password)
 smtp_server.sendmail(sent_from, to, email_text)
 smtp_server.close()
-    

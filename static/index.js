@@ -21979,6 +21979,7 @@ var environment = {
 var noLogin = NO_LOGIN;
 var silentMode = false; // Default banner
 
+/*
 var bannerMain = 'Node Web Console';
 var bannerLink = 'https://github.com/ChrisCindy/node-web-console';
 var bannerExtra = "".concat(bannerLink, "\n"); // Big banner
@@ -21986,7 +21987,7 @@ var bannerExtra = "".concat(bannerLink, "\n"); // Big banner
 if (!settings.isSmallWindow) {
   bannerMain = '    _   __          __        _       __     __       ______                       __' + '\n   / | / /___  ____/ /__     | |     / /__  / /_     / ____/___  ____  _________  / /__ ' + '\n  /  |/ / __ \\/ __  / _ \\    | | /| / / _ \\/ __ \\   / /   / __ \\/ __ \\/ ___/ __ \\/ / _ \\' + '\n / /|  / /_/ / /_/ /  __/    | |/ |/ /  __/ /_/ /  / /___/ /_/ / / / (__  ) /_/ / /  __/' + '\n/_/ |_/\\____/\\__,_/\\___/     |__/|__/\\___/_.___/   \\____/\\____/_/ /_/____/\\____/_/\\___/ ';
   bannerExtra = "\n".concat(bannerLink, "\n");
-}
+}*/
 
 var terminal = null;
 init();
